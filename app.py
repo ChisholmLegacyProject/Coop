@@ -33,6 +33,9 @@ def main():
     # Check if 'Latitude' and 'Longitude' columns exist
     if 'Latitude' in data.columns and 'Longitude' in data.columns:
         my_map = create_map(data)
-        folium_static(my_map)  # Display the map
+        st.folium_chart(my_map)  # Display the map
     else:
         st.error("The CSV file should contain 'Latitude' and 'Longitude' columns.")
+
+if __name__ == '__main__':
+    main()

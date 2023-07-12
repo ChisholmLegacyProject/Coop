@@ -17,12 +17,13 @@ def main():
 
     # Check if 'Latitude' and 'Longitude' columns exist
     if 'Latitude' in data.columns and 'Longitude' in data.columns:
+        # Filter out rows with missing latitude or longitude values
+        filtered_data = data.dropna(subset=['Latitude', 'Longitude'])
+        
         # Display the map
-        st.map(data)
+        st.map(filtered_data)
     else:
         st.error("The CSV file should contain 'Latitude' and 'Longitude' columns.")
 
 if __name__ == '__main__':
     main()
-
-

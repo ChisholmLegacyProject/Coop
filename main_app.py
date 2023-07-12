@@ -1,7 +1,6 @@
 import streamlit as st
-import requests
-from streamlit_folium import folium_static
 import folium
+from streamlit_folium import folium_static
 
 def main():
     st.title("Interactive Map")
@@ -9,24 +8,20 @@ def main():
 
     # Sidebar options
     zoom_level = st.sidebar.slider("Zoom Level", 1, 18, 10)
-    github_url = st.sidebar.text_input("https://raw.githubusercontent.com/ChisholmLegacyProject/Coop/main/map.html")
+    map_file = st.sidebar.file_uploader("https://raw.githubusercontent.com/ChisholmLegacyProject/Coop/main/map.html", type=["html"])
 
-    if github_url:
-        # Fetch the HTML content from the GitHub URL
-        response = requests.get(github_url)
-        if response.status_code == 200:
-            map_html = response.text
+    if map_file is not None:
+        # Read the uploaded HTML file
+        map_html = map_file.read()
 
-            # Create a Folium map object
-            folium_map = folium.Map(location=[0, 0], zoom_start=zoom_level)
+        # Create a Folium map object
+        folium_map = folium.Map(location=[0, 0], zoom_start=zoom_level)
 
-            # Render the HTML map in the Folium map object
-            folium_map.get_root().html.add_child(folium.Element(map_html))
+        # Render the HTML map in the Folium map object
+        folium_map.get_root().html.add_child(folium.Element(map_html))
 
-            # Render the Folium map object using folium_static
-            folium_static(folium_map)
-        else:
-            st.error("Failed to fetch HTML file. Please make sure the URL is correct and accessible.")
+        # Render the Folium map object using folium_static
+        folium_static(folium_map)
 
 if __name__ == "__main__":
     main()
